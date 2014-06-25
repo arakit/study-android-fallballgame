@@ -1,9 +1,16 @@
 package jp.hym.falingballgamge;
 
+
+
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -11,8 +18,13 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		//aaaaaaaaaa
+		
+		ViewGroup container = (ViewGroup)findViewById(R.id.container);
+		
+		Log.i("System.out" , "メインアクティビティー");
+		
+		GameSurface gs = new GameSurface(this);
+		container.addView(gs);
 	}
 
 	@Override
@@ -35,6 +47,6 @@ public class MainActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-
-
 }
+
+
