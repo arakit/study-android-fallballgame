@@ -64,8 +64,8 @@ public class InclinationSensor{
     	public void onSensorChanged(SensorEvent event) {
     		mSensorValue.onSensorChanged(event);
 
-    		roll = (float)mSensorValue.getRoll() ;
-    		picth = (float)mSensorValue.getPitch() ;
+    		roll = (float)mSensorValue.getRollDegree() ;
+    		picth = (float)mSensorValue.getPitchDegree() ;
     		//direction = (float)mSensorValue.getAzimuthDegree();
     	}
 
