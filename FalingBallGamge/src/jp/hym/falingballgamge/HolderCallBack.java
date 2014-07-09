@@ -66,7 +66,7 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
     	start_x = width - ballSize;	//スタートx座標
     	start_y = height - ballSize;	//スタートy座標
     	ballSize = 50;	//ボールサイズ
-    	speed = 50.0f;	//ボールスピード
+    	speed = 0.1f;	//ボールスピード
 
     	//ゴール関係
     	goal_x = 500;	//ゴールx座標

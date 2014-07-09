@@ -4,6 +4,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.util.Log;
+import android.view.Display;
+import android.view.Surface;
 
 public class SensorValue{
 
@@ -27,9 +29,11 @@ public class SensorValue{
     	switch (event.sensor.getType()) {
 	        case Sensor.TYPE_MAGNETIC_FIELD:
 	            magneticValues = event.values.clone();
+	            Log.d("tets15", "mag");
 	            break;
 	        case Sensor.TYPE_ACCELEROMETER:
 	            accelerometerValues = event.values.clone();
+	            Log.d("tets15", "acc");
 	            break;
 	    }
 
@@ -43,9 +47,49 @@ public class SensorValue{
 //	        }else{
 //	        	SensorManager.remapCoordinateSystem(inR, SensorManager.AXIS_Z, SensorManager.AXIS_MINUS_X, outR);
 //	        }
-	        SensorManager.remapCoordinateSystem(inR, SensorManager.AXIS_Y, SensorManager.AXIS_MINUS_X, outR);
+	        SensorManager.remapCoordinateSystem(inR, SensorManager.AXIS_X, SensorManager.AXIS_MINUS_Y, outR);
+	        
+	        
+	        
+	        ////
+	        
 
-	        SensorManager.getOrientation(outR, orientationValuesBB);
+//	        // ディスプレイの回転方向を求める(縦もちとか横持ちとか)
+//	        Display disp = this.getWindowManager().getDefaultDisplay();
+//	        // ↓コレを使うためにはAPIレベルを8にする必要がある
+//	        int dispDir = disp.getRotation();
+//	 
+//	        // 画面回転してない場合はそのまま
+//	        if (dispDir == Surface.ROTATION_0) {
+//	            SensorManager.getOrientation(outR, orientationValuesBB);
+//	 
+//	            // 回転している
+//	        } else {
+//	 
+//	            float[] outR = new float[16];
+//	 
+//	            // 90度回転
+//	            if (dispDir == Surface.ROTATION_90) {
+//	                SensorManager.remapCoordinateSystem(
+//	                        rotate, SensorManager.AXIS_Y,SensorManager.AXIS_MINUS_X, outR);
+//	                // 180度回転
+//	            } else if (dispDir == Surface.ROTATION_180) {
+//	                float[] outR2 = new float[16];
+//	 
+//	                SensorManager.remapCoordinateSystem(
+//	                        rotate, SensorManager.AXIS_Y,SensorManager.AXIS_MINUS_X, outR2);
+//	                SensorManager.remapCoordinateSystem(
+//	                        outR2, SensorManager.AXIS_Y,SensorManager.AXIS_MINUS_X, outR);
+//	                // 270度回転
+//	            } else if (dispDir == Surface.ROTATION_270) {
+//	                SensorManager.remapCoordinateSystem(
+//	                        outR, SensorManager.AXIS_MINUS_Y,SensorManager.AXIS_MINUS_X, outR);
+//	            }
+//	            SensorManager.getOrientation(outR, orientationValuesBB);
+//	        }
+	        
+
+	        ////// SensorManager.getOrientation(outR, orientationValuesBB);
 
 			//今回と前回の差を計算
 			float[] subst = new float[3];
@@ -62,7 +106,7 @@ public class SensorValue{
 //				else if( subdist_s > rad1 * rad1 *  5 ) w = 0.3f;
 //				else w = 0.1f;
 				orientationValues[i] = orientationValuesBB[i] * w + orientationValues[i] * (1.0f-w);
-			}
+				}
 //			orientationValues[0] = orientationValuesBB[0] * w + orientationValues[0] * (1.0f-w);
 //			orientationValues[1] = orientationValuesBB[1] * w + orientationValues[1] * (1.0f-w);
 //			orientationValues[2] = orientationValuesBB[2] * w + orientationValues[2] * (1.0f-w);
@@ -75,7 +119,7 @@ public class SensorValue{
 ////				orientationValues[1] += subst[1] * w;
 ////				orientationValues[2] += subst[2] * w;
 ////			}
-
+//
 	        Log.d("test8", String.format("Orientation: z=%.1f, x=%.1f, Y=%.1f",
 	        				Math.toDegrees(orientationValues[0]),	//Z軸方向,azimuth
 	        				Math.toDegrees(orientationValues[1]),	//X軸方向,pitch
