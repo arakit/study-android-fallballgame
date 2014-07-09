@@ -18,7 +18,9 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
+        Log.d("test", "rotate="+getWindowManager().getDefaultDisplay().getOrientation());
+
 		ViewGroup container = (ViewGroup)findViewById(R.id.container);
 		
 		Log.i("System.out" , "メインアクティビティー");

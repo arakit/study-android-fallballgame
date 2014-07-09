@@ -46,7 +46,7 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 
 	public HolderCallBack(FragmentActivity activity) {
 		mActivity = activity;
-		is = new InclinationSensor(activity);
+		is = new InclinationSensor(activity, activity.getWindowManager().getDefaultDisplay().getOrientation());
 	}
 
     @Override

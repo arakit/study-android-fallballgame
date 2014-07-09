@@ -24,8 +24,8 @@ public class InclinationSensor{
 	private float roll;	//回転角
 	private float picth;	//傾斜角
 
-	public InclinationSensor(Context context){
-		mSensorValue = new SensorValue();
+	public InclinationSensor(Context context, int ori){
+		mSensorValue = new SensorValue(ori);
 		mSensorManager = (SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
 	}
 

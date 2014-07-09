@@ -20,6 +20,13 @@ public class SensorValue{
     public float[] magneticValues      = new float[3];
     public float[] accelerometerValues = new float[3];
 
+    final int displayOrientation;
+
+    public SensorValue(int displayOrientation){
+        this.displayOrientation = displayOrientation;
+    }
+
+
 
     public void onSensorChanged(SensorEvent event){
     	//信頼できない値は無視
@@ -47,7 +54,7 @@ public class SensorValue{
 //	        }else{
 //	        	SensorManager.remapCoordinateSystem(inR, SensorManager.AXIS_Z, SensorManager.AXIS_MINUS_X, outR);
 //	        }
-	        SensorManager.remapCoordinateSystem(inR, SensorManager.AXIS_X, SensorManager.AXIS_MINUS_Y, outR);
+//	        SensorManager.remapCoordinateSystem(inR,  SensorManager.AXIS_X, SensorManager.AXIS_Y, outR);
 	        
 	        
 	        
@@ -89,7 +96,21 @@ public class SensorValue{
 //	        }
 	        
 
-	        ////// SensorManager.getOrientation(outR, orientationValuesBB);
+            if(displayOrientation == Surface.ROTATION_0) {
+                SensorManager.remapCoordinateSystem(inR,  SensorManager.AXIS_X, SensorManager.AXIS_Y, outR);
+            }
+            else if(displayOrientation == Surface.ROTATION_90) {
+                SensorManager.remapCoordinateSystem(inR,  SensorManager.AXIS_Y, SensorManager.AXIS_MINUS_X, outR);
+            }
+            else if(displayOrientation == Surface.ROTATION_180) {
+                SensorManager.remapCoordinateSystem(inR,  SensorManager.AXIS_MINUS_X, SensorManager.AXIS_MINUS_Y, outR);
+            }
+            else if(displayOrientation == Surface.ROTATION_270) {
+                SensorManager.remapCoordinateSystem(inR,  SensorManager.AXIS_MINUS_Y, SensorManager.AXIS_X, outR);
+            }
+
+            SensorManager.getOrientation(outR, orientationValuesBB);
+
 
 			//今回と前回の差を計算
 			float[] subst = new float[3];
