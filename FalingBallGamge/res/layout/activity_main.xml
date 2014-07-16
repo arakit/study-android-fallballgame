@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="jp.crudefox.hall.MainActivity" >
+    tools:context="jp.crudefox.hall.ui.MainActivity" >
 
     <FrameLayout
         android:id="@+id/container"

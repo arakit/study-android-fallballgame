@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme" >
 
         <activity
-                android:name="jp.crudefox.hall.MainActivity"
+                android:name=".ui.MainActivity"
                 android:screenOrientation="portrait"
                 android:configChanges="orientation|keyboardHidden"
                 >
