@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">FalingBallGamge</string>
+    <string name="app_name">おむすび型</string>
+
+
+
+
+
+    <!-- いらない -->
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_goal">GoalActivity</string>
