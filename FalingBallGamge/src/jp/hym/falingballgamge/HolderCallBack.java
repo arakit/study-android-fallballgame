@@ -28,16 +28,22 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 
 	private float width, height;	//画面サイズ
 
-	private int ballSize;	//ボールサイズ
+	private int ballSize = 50;	//ボールサイズ
 	private int ball_x, ball_y;	//ボール座標
-	private int start_x, start_y;	//初期座標
-	private float speed;	//ボールスピード
-	private float dx, dy;	//加速度
+	private int start_x = ballSize, start_y = ballSize;	//初期座標
+	private float acceleration = 0.01f;	//加速度
+	private float maxSpeed = 20.0f;	//ボールスピードの上限
+	private float dx=0, dy=0;	//ボール速度
 	private List<PointF> holls = new ArrayList<PointF>();//穴の座標
-	private int hollsSize;	//穴の大きさ
-	private int goal_x, goal_y;	//ゴール座標
-	private int goalSize;	//ゴールの大きさ
-
+	private int hollsSize = 100;	//穴の大きさ
+	private int goal_x = 500, goal_y = 500;	//ゴール座標
+	private int goalSize = 100;	//ゴールの大きさ
+	
+	private float resist = 0.1f; //抵抗
+	private float rebound = 0.8f;	//跳ね返りの大きさ
+	
+	private float cd = 0.5f;	//当たり判定
+	
 	private FragmentActivity mActivity;
 
 	Context context;
@@ -51,32 +57,35 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-    	Log.i("System.out" , "HoldCallBackのsurfaceChanged");
+    	//Log.i("System.out" , "HoldCallBackのsurfaceChanged");
+    	
     	this.width = width;
     	this.height = height;
 
     	//ランダムで障害物配置
     	for(int i=0;i<5;i++){
-    		holls.add(new PointF((float)Math.random()*width, (float)Math.random()*height));
+    		//holls.add(new PointF((float)Math.random()*width, (float)Math.random()*height));
     	}
 
 //↓プログラミング体験
 
-    	//ボール関係
-    	start_x = width - ballSize;	//スタートx座標
-    	start_y = height - ballSize;	//スタートy座標
+    	start_x = ballSize;	//スタートx座標
+    	start_y = ballSize;	//スタートy座標
     	ballSize = 50;	//ボールサイズ
-    	speed = 0.1f;	//ボールスピード
+    	acceleration = 0.01f;	//加速度
+    	maxSpeed = 20.0f;	//ボールスピードの上限の絶対値
 
-    	//ゴール関係
     	goal_x = 500;	//ゴールx座標
     	goal_y = 500;	//ゴールy座標
     	goalSize = 100;	//ゴールの大きさ
 
-    	//穴関係
     	holls.add(new PointF(100, 200));	//holls.add(new PointF(穴x座標,穴y座標))	＊複数追加OK
     	hollsSize = 100;	//穴の大きさ
 
+    	resist = 0.1f;	//抵抗
+    	rebound = 0.8f;	//跳ね返りの大きさ
+    	cd = 0.5f;	//当たり判定
+    	
 //↑プログラミング体験
 
     	//枠内に変更
@@ -115,18 +124,42 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
     	while( isAttached ){
 
     		is.getInclination();	//傾きセンサー取得
-    		String strlog = "roll = " + is.GetRoll() + "\tpicth = " + is.GetPicth();
+    		//String strlog = "roll = " + is.GetRoll() + "\tpicth = " + is.GetPicth();
+        	//Log.i("System.out", strlog);
     		
-        	Log.i("System.out", strlog);
-        	dx = (is.GetRoll()) * speed;
-        	dy = -is.GetPicth() * speed;
+        	dx += is.GetRoll() * acceleration;
+        	dy += -is.GetPicth() * acceleration;
+        	
+        	//速度の上限
+        	if(dx>maxSpeed){dx = maxSpeed;}
+        	if(dx<-maxSpeed){dx = -maxSpeed;}
+        	if(dy>maxSpeed){dy = maxSpeed;}
+        	if(dy<-maxSpeed){dy = -maxSpeed;}
 
+        	//抵抗
+        	if(dx>resist){
+        		dx -= resist;
+        	}else
+        	if(dx<-resist){
+        		dx += resist;
+        	}else{
+        		dx = 0;
+        	}
+        	if(dy>resist){
+        		dy -= resist;
+        	}else
+        	if(dy<-resist){
+        		dy += resist;
+        	}else{
+        		dy = 0;
+        	}
+        	
     		//枠外判定
     		if(ball_x < ballSize || this.width - ballSize < ball_x){
-    			dx = -dx;
+    			dx = (int) - dx * rebound;
     		}
     		if(ball_y < ballSize || this.height - ballSize < ball_y){
-    			dy = -dy;
+    			dy = (int) - dy * rebound;
     		}
 
     		//枠外に行ってしまった場合
@@ -139,9 +172,9 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
     		ball_y = ball_y + (int)dy;
 
     		draw();	//描画
-
-			//ゴール判定
-			if(Math.abs(goal_x - ball_x) <= goalSize - ballSize  && Math.abs(goal_y - ball_y) <= goalSize - ballSize){
+    		
+    		//ゴール判定
+    		if(Math.pow((goalSize - ballSize * cd), 2) >= Math.pow((goal_x - ball_x), 2) + Math.pow((goal_y - ball_y), 2)){
 				/*
 				new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
 					@Override
@@ -155,12 +188,14 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 				ball_x = start_x;
 				ball_y = start_y;
 			}
-
+			
     		//当たり判定
 			for(int i=0;i<holls.size();i++)
-				if(Math.abs(holls.get(i).x - ball_x) <= hollsSize - ballSize && Math.abs(holls.get(i).y - ball_y) <= hollsSize - ballSize){
+				if(Math.pow((hollsSize - ballSize), 2) >= Math.pow((holls.get(i).x - ball_x), 2) + Math.pow((holls.get(i).y - ball_y), 2)){
 					ball_x = start_x;
 					ball_y = start_y;
+					dx = 0;
+					dy = 0;
 				}
 			}
     }
