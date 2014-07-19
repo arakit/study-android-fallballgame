@@ -3,9 +3,15 @@ package jp.hym.falingballgamge;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.crypto.spec.OAEPParameterSpec;
+
+import android.R.bool;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -34,7 +40,6 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 	private float coordResist = 0.1f;	//抵抗調整
 	private float coordRebound = 0.8f;	//跳ね返りの大きさ調整
 	private float coordCd = 0.5f;	//当たり判定
-
 	
 	//高校生がいじる用
 	private int ballSize = 50;	//ボールサイズ
@@ -50,13 +55,16 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 	private float rebound = 1.0f;	//跳ね返りの大きさ
 	
 	private FragmentActivity mActivity;
-
+//画像用追加
 	Context context;
+
 	InclinationSensor is;
 
 	public HolderCallBack(FragmentActivity activity) {
 		mActivity = activity;
 		is = new InclinationSensor(activity, activity.getWindowManager().getDefaultDisplay().getOrientation());
+//画像用追加
+		context = activity;
 	}
 
     @Override
@@ -79,7 +87,7 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
     	start_y = ballSize;	//スタートy座標
     	ballSize = 50;	//ボールサイズ
     	acceleration = 1.0f;	//加速度
-    	maxSpeed = 2.0f;	//ボールスピードの上限の絶対値
+    	maxSpeed = 1.0f;	//ボールスピードの上限の絶対値
 
     	goal_x = 500;	//ゴールx座標
     	goal_y = 500;	//ゴールy座標
@@ -94,7 +102,6 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 //↑プログラミング体験
 
     	//無理な数値を調整
-    	
     	maxSpeed = Math.abs(maxSpeed);	//速度
     	
     	//枠内に変更
@@ -133,7 +140,7 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
     	while( isAttached ){
 
     		is.getInclination();	//傾きセンサー取得
-    		String strlog = "roll = " + is.GetRoll() + "\tpicth = " + is.GetPicth();
+    		//String strlog = "roll = " + is.GetRoll() + "\tpicth = " + is.GetPicth();
         	//Log.i("System.out", strlog);
         	
         	dx += is.GetRoll() * coordAcceleration * acceleration;
@@ -214,12 +221,20 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 
     //描画
     private void draw(){
+//画像用追加
+    	Bitmap boal,holl,goal;
+    	
     	//描画処理を開始
 		Canvas canvas = holder.lockCanvas();
-		//canvas.drawColor(255, PorterDuff.Mode.CLEAR);
 		canvas.drawColor(Color.WHITE);
 		Paint paint = new Paint();
-
+		
+//画像用追加
+    	Resources res = context.getResources();
+		boal = BitmapFactory.decodeResource(res, R.drawable.test);	//画像読み込み
+		//canvas.drawBitmap(boal,0,0,paint);
+//画像用追加
+		
     	//穴描画
     	for(int i = 0; i < holls.size(); i++){
 			paint.setColor(Color.BLACK);	//色
@@ -231,8 +246,11 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 		canvas.drawCircle(goal_x, goal_y, goalSize, paint);
 
     	//ボール描画
-		paint.setColor(Color.BLUE);	//色
-		canvas.drawCircle(ball_x, ball_y, ballSize, paint);
+		//paint.setColor(Color.BLUE);	//色
+		//canvas.drawCircle(ball_x, ball_y, ballSize, paint);
+		
+//画像用追加
+		canvas.drawBitmap(boal,ball_x,ball_y,paint);
 
 		holder.unlockCanvasAndPost(canvas);	//描画処理を終了
     }
@@ -245,3 +263,6 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
     	return point;
     }
 }
+
+
+///
