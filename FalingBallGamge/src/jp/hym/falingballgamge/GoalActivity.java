@@ -72,7 +72,7 @@ public class GoalActivity extends ActionBarActivity implements OnClickListener{
 	}
 	
 	public void onClick(View v){
-		Toast.makeText(this, "ボタンテスト", Toast.LENGTH_LONG).show();
+		//Toast.makeText(this, "ボタンテスト", Toast.LENGTH_LONG).show();
 		//画面遷移
 		Intent intent = new Intent();
 		intent .setClassName("jp.hym.falingballgamge", "jp.hym.falingballgamge.MainActivity");

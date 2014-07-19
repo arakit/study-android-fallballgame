@@ -36,11 +36,11 @@ public class SensorValue{
     	switch (event.sensor.getType()) {
 	        case Sensor.TYPE_MAGNETIC_FIELD:
 	            magneticValues = event.values.clone();
-	            Log.d("tets15", "mag");
+	            //Log.d("tets15", "mag");
 	            break;
 	        case Sensor.TYPE_ACCELEROMETER:
 	            accelerometerValues = event.values.clone();
-	            Log.d("tets15", "acc");
+	            //Log.d("tets15", "acc");
 	            break;
 	    }
 
@@ -141,11 +141,14 @@ public class SensorValue{
 ////				orientationValues[2] += subst[2] * w;
 ////			}
 //
+			/*
 	        Log.d("test8", String.format("Orientation: z=%.1f, x=%.1f, Y=%.1f",
 	        				Math.toDegrees(orientationValues[0]),	//Z軸方向,azimuth
 	        				Math.toDegrees(orientationValues[1]),	//X軸方向,pitch
 	        				Math.toDegrees(orientationValues[2])	//Y軸方向,roll
+	        	
 	        	));
+	        */
 	    }
 
     }

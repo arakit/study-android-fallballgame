@@ -23,7 +23,7 @@ public class MainActivity extends ActionBarActivity {
 
 		ViewGroup container = (ViewGroup)findViewById(R.id.container);
 		
-		Log.i("System.out" , "メインアクティビティー");
+		//Log.i("System.out" , "メインアクティビティー");
 		
 		GameSurface gs = new GameSurface(this);
 		container.addView(gs);

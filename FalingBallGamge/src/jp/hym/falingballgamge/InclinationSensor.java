@@ -75,6 +75,12 @@ public class InclinationSensor{
     }; 
     
     float GetRoll(){
+    	if(roll > 90.0f){
+    		roll = 180 - roll;
+    	}else
+    	if(roll < -90.0f){
+    		roll = -180 - roll;
+    	}
 		return roll;
 	}
 	
