@@ -16,20 +16,30 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.*;
+import android.graphics.drawable.BitmapDrawable;
+
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.util.Pair;
 import android.view.SurfaceHolder;
-import android.widget.Toast;
-import android.graphics.PorterDuff;
 
 public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 
 	private SurfaceHolder holder = null;
 	private Thread thread = null;
 	private boolean isAttached = true;
+
+    //resources
+    private Bitmap image_hall;
+    private Bitmap image_ball;
+    private Bitmap image_goal;
+    private Bitmap image_floor;
 
 	private float width, height;	//画面サイズ
 	private float dx=0, dy=0;	//ボール速度
@@ -63,8 +73,13 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 	public HolderCallBack(FragmentActivity activity) {
 		mActivity = activity;
 		is = new InclinationSensor(activity, activity.getWindowManager().getDefaultDisplay().getOrientation());
-//画像用追加
-		context = activity;
+
+		Resources res = activity.getResources();
+        image_ball = ((BitmapDrawable) res.getDrawable(R.drawable.ic_ball_01)).getBitmap();
+        image_hall = ((BitmapDrawable) res.getDrawable(R.drawable.ic_hall_01)).getBitmap();
+        image_goal = ((BitmapDrawable) res.getDrawable(R.drawable.ic_goal_01)).getBitmap();
+        image_floor = ((BitmapDrawable) res.getDrawable(R.drawable.bg_floor_01_tile_parts)).getBitmap();
+        
 	}
 
     @Override
@@ -221,38 +236,61 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 
     //描画
     private void draw(){
-//画像用追加
-    	Bitmap boal,holl,goal;
-    	
+
     	//描画処理を開始
 		Canvas canvas = holder.lockCanvas();
+
 		canvas.drawColor(Color.WHITE);
+		
+        if(canvas == null) return ;
+		//canvas.drawColor(255, PorterDuff.Mode.CLEAR);
+		//canvas.drawColor(Color.WHITE);
 		Paint paint = new Paint();
-		
-//画像用追加
-    	Resources res = context.getResources();
-		boal = BitmapFactory.decodeResource(res, R.drawable.test);	//画像読み込み
-		//canvas.drawBitmap(boal,0,0,paint);
-//画像用追加
-		
+        drawBackgroundRepeat(canvas, image_floor, paint);
+
     	//穴描画
     	for(int i = 0; i < holls.size(); i++){
 			paint.setColor(Color.BLACK);	//色
-			canvas.drawCircle(holls.get(i).x, holls.get(i).y, hollsSize, paint);
+			//canvas.drawCircle(holls.get(i).x, holls.get(i).y, hollsSize, paint);
+            drawBall(canvas, image_hall, paint, holls.get(i).x, holls.get(i).y, hollsSize);
     	}
 
     	//ゴール描画
 		paint.setColor(Color.RED);	//色
-		canvas.drawCircle(goal_x, goal_y, goalSize, paint);
+        drawBall(canvas, image_goal, paint, goal_x, goal_y, goalSize);
+		//canvas.drawCircle(goal_x, goal_y, goalSize, paint);
 
     	//ボール描画
 		//paint.setColor(Color.BLUE);	//色
 		//canvas.drawCircle(ball_x, ball_y, ballSize, paint);
 		
-//画像用追加
-		canvas.drawBitmap(boal,ball_x,ball_y,paint);
+		paint.setColor(Color.BLUE);	//色
+        drawBall(canvas, image_ball, paint, ball_x, ball_y, ballSize);
+		//canvas.drawCircle(ball_x, ball_y, ballSize, paint);
 
 		holder.unlockCanvasAndPost(canvas);	//描画処理を終了
+    }
+
+    private void drawBall(Canvas cv, Bitmap bmp, Paint p, float cx, float cy, int ball_size){
+        float scale = ball_size / ((float)bmp.getWidth()/2);
+
+        Rect s = new Rect(0, 0, bmp.getWidth(), bmp.getHeight());
+        Rect d = new Rect(
+                (int)(cx-bmp.getWidth()*scale/2), (int)(cy-bmp.getHeight()*scale/2),
+                (int)(cx+bmp.getWidth()*scale/2), (int)(cy+bmp.getHeight()*scale/2)
+        );
+
+        cv.drawBitmap(bmp, s, d, p);
+    }
+
+    private void drawBackgroundRepeat(Canvas cv, Bitmap bmp, Paint p){
+
+        for(int y=0; y<height; y+=bmp.getHeight()) {
+            for (int x = 0; x < width; x += bmp.getWidth()) {
+                cv.drawBitmap(bmp, x, y, p);
+            }
+        }
+
     }
 
     //枠内にする
@@ -263,6 +301,3 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
     	return point;
     }
 }
-
-
-///
