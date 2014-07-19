@@ -2,8 +2,6 @@ package jp.hym.falingballgamge;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.Vector;
 
 import android.app.Activity;
 import android.content.Context;
@@ -74,6 +72,7 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
     	ballSize = 50;	//ボールサイズ
     	acceleration = 0.01f;	//加速度
     	maxSpeed = 20.0f;	//ボールスピードの上限の絶対値
+    	//speed = 0.5f;	//ボールスピード
 
     	goal_x = 500;	//ゴールx座標
     	goal_y = 500;	//ゴールy座標
