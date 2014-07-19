@@ -7,19 +7,44 @@
     tools:context="jp.hym.falingballgamge.GoalActivity"
     tools:ignore="MergeRootFrame" >
 
-    <Button
-        android:id="@+id/startButton"
-        android:layout_width="145dp"
-        android:layout_height="83dp"
-        android:layout_gravity="center"
-        android:text="戻る" />
+    <ImageView android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:src="@drawable/bg_goal_screen"
+               android:scaleType="centerCrop"
+            />
 
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|top"
-        android:text="ゴール"
-        android:textSize="50dp" />
+
+
+    <LinearLayout
+            android:background="#80ffffff"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="50dp"
+            android:paddingBottom="50dp"
+            android:gravity="center_vertical|center_horizontal"
+            >
+        <TextView
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|top"
+                android:textColor="#000000"
+                android:text="ゴール!!"
+                android:textSize="50dp" />
+
+        <Button
+                android:gravity="center_vertical|center_horizontal"
+                android:id="@+id/startButton"
+                android:layout_marginTop="20dp"
+                android:layout_width="145dp"
+                android:layout_height="83dp"
+                android:layout_gravity="center"
+                android:text="RETRY!!" />
+
+    </LinearLayout>
+
+
 
 </FrameLayout>

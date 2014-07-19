@@ -77,6 +77,8 @@ public class GoalActivity extends ActionBarActivity implements OnClickListener{
 		Intent intent = new Intent();
 		intent .setClassName("jp.hym.falingballgamge", "jp.hym.falingballgamge.MainActivity");
 		startActivity(intent);
+
+        finish();
 	}
 
 }

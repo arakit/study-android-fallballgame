@@ -75,10 +75,10 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 		is = new InclinationSensor(activity, activity.getWindowManager().getDefaultDisplay().getOrientation());
 
 		Resources res = activity.getResources();
-        image_ball = ((BitmapDrawable) res.getDrawable(R.drawable.ic_ball_01)).getBitmap();
-        image_hall = ((BitmapDrawable) res.getDrawable(R.drawable.ic_hall_01)).getBitmap();
-        image_goal = ((BitmapDrawable) res.getDrawable(R.drawable.ic_goal_01)).getBitmap();
-        image_floor = ((BitmapDrawable) res.getDrawable(R.drawable.bg_floor_01_tile_parts)).getBitmap();
+        image_ball = ((BitmapDrawable) res.getDrawable(R.drawable.ic_ball_02)).getBitmap();
+        image_hall = ((BitmapDrawable) res.getDrawable(R.drawable.ic_hall_02)).getBitmap();
+        image_goal = ((BitmapDrawable) res.getDrawable(R.drawable.ic_goal_02)).getBitmap();
+        image_floor = ((BitmapDrawable) res.getDrawable(R.drawable.bg_floor_05_tile_parts)).getBitmap();
         
 	}
 
@@ -214,6 +214,8 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 					public void run() {
 						Intent intent = new Intent(mActivity, GoalActivity.class);
 						mActivity.startActivity(intent);
+
+                        mActivity.finish();
 					}
 				}, 100);
 				//ループ止める
@@ -239,14 +241,12 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 
     	//描画処理を開始
 		Canvas canvas = holder.lockCanvas();
-
-		canvas.drawColor(Color.WHITE);
-		
         if(canvas == null) return ;
 		//canvas.drawColor(255, PorterDuff.Mode.CLEAR);
 		//canvas.drawColor(Color.WHITE);
 		Paint paint = new Paint();
         drawBackgroundRepeat(canvas, image_floor, paint);
+        //drawBackground(canvas, image_floor, paint);
 
     	//穴描画
     	for(int i = 0; i < holls.size(); i++){
@@ -292,6 +292,18 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
         }
 
     }
+    private void drawBackground(Canvas cv, Bitmap bmp, Paint p){
+
+        Rect s = new Rect(0, 0, bmp.getWidth(), bmp.getHeight());
+        Rect d = new Rect(
+                0,0,
+                (int)width, (int)height
+        );
+
+        cv.drawBitmap(bmp, s, d, p);
+    }
+
+
 
     //枠内にする
     private int Inside(int point, int size, int max){
