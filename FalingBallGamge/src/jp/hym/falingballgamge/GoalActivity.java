@@ -3,23 +3,31 @@ package jp.hym.falingballgamge;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
+import android.content.Intent;
+import android.inputmethodservice.InputMethodService.Insets;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.os.Build;
 
-public class GoalActivity extends ActionBarActivity {
+public class GoalActivity extends ActionBarActivity implements OnClickListener{
 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_goal);
-
+		
+		Button btn = (Button)findViewById(R.id.startButton);
+		btn.setOnClickListener(this);
+				
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
@@ -61,6 +69,14 @@ public class GoalActivity extends ActionBarActivity {
 					false);
 			return rootView;
 		}
+	}
+	
+	public void onClick(View v){
+		Toast.makeText(this, "ボタンテスト", Toast.LENGTH_LONG).show();
+		//画面遷移
+		Intent intent = new Intent();
+		intent .setClassName("jp.hym.falingballgamge", "jp.hym.falingballgamge.MainActivity");
+		startActivity(intent);
 	}
 
 }

@@ -3,6 +3,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     tools:context="jp.hym.falingballgamge.GoalActivity"
     tools:ignore="MergeRootFrame" >
 
@@ -10,6 +11,15 @@
         android:id="@+id/startButton"
         android:layout_width="145dp"
         android:layout_height="83dp"
-        android:text="StartButton" />
+        android:layout_gravity="center"
+        android:text="戻る" />
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:text="ゴール"
+        android:textSize="50dp" />
 
 </FrameLayout>

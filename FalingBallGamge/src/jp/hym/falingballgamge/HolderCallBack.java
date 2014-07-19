@@ -36,16 +36,13 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 	private int hollsSize = 100;	//穴の大きさ
 	private int goal_x = 500, goal_y = 500;	//ゴール座標
 	private int goalSize = 100;	//ゴールの大きさ
-	
 	private float resist = 0.1f; //抵抗
 	private float rebound = 0.8f;	//跳ね返りの大きさ
-	
 	private float cd = 0.5f;	//当たり判定
 	
 	private FragmentActivity mActivity;
 
 	Context context;
-
 	InclinationSensor is;
 
 	public HolderCallBack(FragmentActivity activity) {
@@ -78,12 +75,12 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
     	goal_y = 500;	//ゴールy座標
     	goalSize = 100;	//ゴールの大きさ
 
-    	holls.add(new PointF(100, 200));	//holls.add(new PointF(穴x座標,穴y座標))	＊複数追加OK
+    	holls.add(new PointF(500, 200));	//holls.add(new PointF(穴x座標,穴y座標))	＊複数追加OK
     	hollsSize = 100;	//穴の大きさ
 
     	resist = 0.1f;	//抵抗
     	rebound = 0.8f;	//跳ね返りの大きさ
-    	cd = 0.5f;	//当たり判定
+    	cd = 0.0f;	//当たり判定
     	
 //↑プログラミング体験
 
@@ -173,8 +170,8 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
     		draw();	//描画
     		
     		//ゴール判定
-    		if(Math.pow((goalSize - ballSize * cd), 2) >= Math.pow((goal_x - ball_x), 2) + Math.pow((goal_y - ball_y), 2)){
-				/*
+    		if(Math.pow((goalSize - (ballSize * cd)), 2) >= Math.pow((goal_x - ball_x), 2) + Math.pow((goal_y - ball_y), 2)){
+				
 				new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
 					@Override
 					public void run() {
@@ -183,14 +180,15 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 					}
 				}, 100);
 				//ループ止める
-				 */
-				ball_x = start_x;
-				ball_y = start_y;
+				isAttached = false;
+				
+				//ball_x = start_x;
+				//ball_y = start_y;
 			}
 			
     		//当たり判定
 			for(int i=0;i<holls.size();i++)
-				if(Math.pow((hollsSize - ballSize), 2) >= Math.pow((holls.get(i).x - ball_x), 2) + Math.pow((holls.get(i).y - ball_y), 2)){
+				if(Math.pow((hollsSize - (ballSize * cd)), 2) >= Math.pow((holls.get(i).x - ball_x), 2) + Math.pow((holls.get(i).y - ball_y), 2)){
 					ball_x = start_x;
 					ball_y = start_y;
 					dx = 0;
