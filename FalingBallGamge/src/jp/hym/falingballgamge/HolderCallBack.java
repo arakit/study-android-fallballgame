@@ -130,7 +130,7 @@ public class HolderCallBack implements SurfaceHolder.Callback, Runnable{
 
     	for(int i=0;i<holls.size();i++){
     		holls.get(i).x = Inside((int)holls.get(i).x, hollsSize, (int)this.width);	//穴x座標
-    		holls.get(i).x = Inside((int)holls.get(i).x, hollsSize, (int)this.height);	//穴y座標
+    		holls.get(i).y = Inside((int)holls.get(i).y, hollsSize, (int)this.height);	//穴y座標
     	}
     }
 
